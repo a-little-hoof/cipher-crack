@@ -1,0 +1,13 @@
+_ > nanoagent.plugin.v0001.ProductConfig:
+tagline: "Work out the key to a shifted message and read it"
+summary: "Each case is a short message with every letter moved on by a fixed amount, and the key is withheld. Pick a case and the agent reads the enciphered message, works through the keys, and decides which of the twenty-six readings is English. The key it names has to be the one that really produces the message it submits."
+highlights:
+  - "The messages are invented, so the only way to the plaintext is the key"
+  - "Spaces are left alone, so the word lengths are a foothold"
+  - "A key and a message that do not go together are refused, however readable the message"
+  - "Runs offline: no network, no files, nothing to set up"
+steps:
+  - "Pick a case: postcard, dispatch, ledger or telegram"
+  - "The agent reads the enciphered message and tries keys against it"
+  - "It decides which reading is English and submits that key with the message"
+  - "The card shows the verdict, and a near miss is scored by how much of the message it got right"

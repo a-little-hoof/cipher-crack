@@ -1,0 +1,37 @@
+_ > nanoagent.plugin.v0001.ManifestConfig:
+id: cipher-crack
+name: Cipher Crack
+version: 0.1.0
+status: ready
+spec: nanoagent.plugin/v0001
+
+runtime > nanoagent.plugin.v0001.RuntimeConfig:
+  type: mcp_stdio
+  command: [uv, run, --frozen, python, -m, plugin]
+
+permissions > nanoagent.plugin.v0001.PermissionsConfig:
+  network > nanoagent.plugin.v0001.NetworkConfig:
+    hosts: []
+  filesystem > nanoagent.plugin.v0001.FilesystemConfig:
+    write: [workspace]
+
+# One entry per contract.Tool; its input and output classes are contract.TOOLS's.
+tools > dict[contract.Tool, nanoagent.plugin.v0001.ToolConfig]:
+  read_cipher:
+    description: Read a case's intercepted message, still enciphered
+  decrypt:
+    description: Read what a case's message says under one key letter, whether or not that key is the right one
+  solution:
+    description: Read a case's key and message, which no task tool returns
+
+# One entry per contract.Task; its input and output classes are contract.TASKS's.
+tasks > dict[contract.Task, nanoagent.plugin.v0001.TaskConfig]:
+  crack-cipher:
+    description: Find the key a case's message was enciphered with and read the message
+    runner: agent
+    tools: [read_cipher, decrypt]
+    reference: solution
+    instructions: |-
+      The case holds a message enciphered by moving every letter on by a fixed amount. Spaces were left alone, so the lengths of the words are the lengths of the real words. The key is the letter that says how far: A leaves a letter alone, B moves it on by one, and so on to Z.
+      Read the message with read_cipher. Then work through the keys with decrypt: it reports what the message says under any key you ask for, and tells you nothing about whether that key is the right one. Exactly one of the twenty-six keys turns the message into English; every other key turns it into nonsense. Decide which one reads as English.
+      Submit the case as the task gave it, the key letter, and the message exactly as decrypt returned it under that key. Copy the message rather than retyping it: a single wrong letter is a wrong answer, and the key you submit must be the one that produces the message you submit.
